@@ -1,6 +1,14 @@
 # Web Security Guard
 
+[![Claude Code Plugin](https://img.shields.io/badge/Claude%20Code-plugin-d97757)](https://docs.claude.com/en/docs/claude-code)
+[![Version](https://img.shields.io/badge/version-0.2.1-blue)](https://github.com/ayalaphiscan/web-security-guard/releases)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+
 A security plugin for [Claude Code](https://docs.claude.com/en/docs/claude-code) and Claude Cowork that turns Claude into a security-aware engineer. It bundles 6 skills, 2 slash commands and ready-to-deploy infrastructure templates covering the full lifecycle: hardening, authentication, payments privacy, active defense, stealth architecture and CI security.
+
+```
+/plugin marketplace add ayalaphiscan/web-security-guard
+```
 
 ## What's inside
 
