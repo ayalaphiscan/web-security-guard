@@ -1,0 +1,25 @@
+COME PUBBLICARE QUESTO REPOSITORY (2 minuti, senza installare nulla)
+
+1. Vai su https://github.com/new
+   - Repository name: web-security-guard
+   - Description: Security plugin for Claude Code & Cowork - hardening, 2FA, WAF agent, Fortress architecture
+   - Public ✔ — NON spuntare "Add a README"
+   - Crea il repository
+
+2. Nella pagina del nuovo repo clicca "uploading an existing file"
+
+3. Trascina dentro TUTTO il contenuto della cartella github-repo
+   (incluse le cartelle .claude-plugin, commands, skills)
+   e clicca "Commit changes"
+
+FATTO. Gli altri utenti potranno installarlo con:
+  /plugin marketplace add TUO_USERNAME/web-security-guard
+  /plugin install web-security-guard@web-security-guard
+
+In alternativa, se hai git installato, dalla cartella github-repo:
+  git init && git add -A && git commit -m "Web Security Guard v0.2.1"
+  git branch -M main
+  git remote add origin https://github.com/TUO_USERNAME/web-security-guard.git
+  git push -u origin main
+
+NOTA: nel README sostituisci YOUR_GITHUB_USERNAME con il tuo username.
