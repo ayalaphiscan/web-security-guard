@@ -1,9 +1,11 @@
 ---
 name: hardening-siti
-description: Applica regole di sicurezza (hardening) ogni volta che si costruisce, modifica o revisiona un sito web o un'app. Copre security headers, CSP, HTTPS, validazione input, cookie, CORS, upload, gestione errori e OWASP Top 10. Trigger - "crea un sito", "costruisci un'app", "metti in sicurezza", "proteggi il sito", "hardening", "security headers", "build a website".
+description: Applica regole di sicurezza (hardening) ogni volta che si costruisce, modifica o revisiona un sito web o un'app. Copre security headers, CSP, HTTPS, validazione input, cookie, CORS, upload, gestione errori e OWASP Top 10. Trigger - "crea un sito", "metti in sicurezza", "hardening", "security headers". EN - Applies security hardening whenever a website or app is built, modified or reviewed. Covers security headers, CSP, HTTPS, input validation, cookies, CORS, uploads, error handling and the OWASP Top 10. Triggers - "build a website", "create an app", "secure my site", "hardening".
 ---
 
-# Hardening Siti
+# Hardening Siti · Website Hardening
+
+> 🇮🇹 Versione italiana qui sotto · 🇬🇧 [English version below](#website-hardening-english)
 
 Quando si costruisce o si modifica un sito/app, applicare SEMPRE queste regole di sicurezza senza che l'utente debba chiederlo. Segnalare nel riepilogo finale quali protezioni sono state applicate.
 
@@ -55,3 +57,49 @@ In Node/Express usare `helmet()`. In Django attivare `SECURE_*` settings. Su hos
 
 ## Checklist finale
 Prima di consegnare un sito/app, verificare: headers presenti, query parametrizzate, validazione server, cookie sicuri, CSRF, niente segreti nel codice, errori generici, `.gitignore` corretto. Elencare all'utente le protezioni applicate e gli eventuali punti che richiedono configurazione sul suo hosting.
+
+---
+
+# Website Hardening (English)
+
+When building or modifying a website/app, ALWAYS apply these security rules without the user having to ask. In the final summary, list which protections were applied.
+
+## Mandatory rules
+
+### 1. Security headers
+Apply to every HTML response (same header block as above).
+
+In Node/Express use `helmet()`. In Django enable the `SECURE_*` settings. On static hosting (Netlify/Vercel/GitHub Pages) use the platform's headers file. Adapt the CSP to the site's real resources (CDN, fonts, analytics) — never use `unsafe-inline` for scripts; prefer nonces or hashes.
+
+### 2. Input and output
+- Validate EVERY input server-side (type, length, format, whitelist). Client-side validation is UX only.
+- Database queries ONLY parameterized or via ORM. Never concatenate strings into SQL.
+- Escape output in templates (autoescaping on). Never place user input into `innerHTML`, `eval`, event attributes or URLs without sanitization.
+- File paths: never build paths from user input; use mapped IDs or `path.basename` + a fixed directory.
+
+### 3. Cookies and sessions
+- Session cookies: `HttpOnly; Secure; SameSite=Lax` (or `Strict` for sensitive actions).
+- Regenerate the session ID at login. Absolute and inactivity expiration.
+- CSRF protection on every state-changing form/action (CSRF token or SameSite + Origin check).
+
+### 4. CORS
+- Never `Access-Control-Allow-Origin: *` on authenticated endpoints. Explicit origin whitelist.
+
+### 5. File uploads
+- Extension whitelist AND content-type verified against the real content (magic bytes).
+- Rename files with random IDs, store them OUTSIDE the web root or on separate storage, limit size.
+
+### 6. Errors and logs
+- Never show stack traces or internals to the user; generic error page + server-side log.
+- Log logins, auth failures, payments and admin actions (no sensitive data in logs).
+
+### 7. Secrets and dependencies
+- Never keys/API keys/passwords in code or repo: use environment variables and `.env` in `.gitignore`.
+- Always generate `.gitignore` with `.env`, `node_modules`, credentials.
+- Keep dependencies up to date; recommend `npm audit` / `pip-audit` (see the sicurezza-github skill for automation).
+
+### 8. HTTPS
+- All traffic over HTTPS, redirect from HTTP, HSTS on. Local dev over HTTP is fine but document the difference.
+
+## Final checklist
+Before delivering a site/app verify: headers present, parameterized queries, server validation, secure cookies, CSRF, no secrets in code, generic errors, correct `.gitignore`. List the applied protections and any items requiring configuration on the user's hosting.
