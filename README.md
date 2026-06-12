@@ -1,11 +1,11 @@
 # Web Security Guard
 
 [![Claude Code Plugin](https://img.shields.io/badge/Claude%20Code-plugin-d97757)](https://docs.claude.com/en/docs/claude-code)
-[![Version](https://img.shields.io/badge/version-0.2.1-blue)](https://github.com/ayalaphiscan/web-security-guard/releases)
+[![Version](https://img.shields.io/badge/version-0.3.0-blue)](https://github.com/ayalaphiscan/web-security-guard/releases)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![Built with Claude Fable 5](https://img.shields.io/badge/built%20with-Claude%20Fable%205-d97757)](https://claude.com/claude-code)
 
-A security plugin for [Claude Code](https://docs.claude.com/en/docs/claude-code) and Claude Cowork that turns Claude into a security-aware engineer. It bundles 6 skills, 2 slash commands and ready-to-deploy infrastructure templates covering the full lifecycle: hardening, authentication, payments privacy, active defense, stealth architecture and CI security.
+A security plugin for [Claude Code](https://docs.claude.com/en/docs/claude-code) and Claude Cowork that turns Claude into a security-aware engineer. It bundles 6 skills, 2 slash commands and ready-to-deploy infrastructure templates covering the full lifecycle: hardening, authentication, payments privacy, active defense, stealth architecture and CI security. All skills are **bilingual (English + Italiano)**.
 
 ```
 /plugin marketplace add ayalaphiscan/web-security-guard
@@ -35,7 +35,7 @@ A security plugin for [Claude Code](https://docs.claude.com/en/docs/claude-code)
 ```
 
 ### Claude Cowork (desktop app)
-Download this repository as a zip, rename it to `web-security-guard.plugin`, then install it from **Settings → Capabilities**.
+Download `web-security-guard.plugin` from the [latest release](https://github.com/ayalaphiscan/web-security-guard/releases/latest) and install it from **Settings → Capabilities**.
 
 ## Usage examples
 
