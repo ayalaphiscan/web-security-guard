@@ -1,9 +1,11 @@
 ---
 name: privacy-pagamenti
-description: Protegge dati di pagamento e abbonamenti quando un sito/app gestisce checkout, carte, subscription o fatturazione. Copre integrazione sicura Stripe/PayPal, verifica firma webhook, PCI-DSS, GDPR, minimizzazione dati e ciclo di vita degli abbonamenti. Trigger - "pagamenti", "checkout", "abbonamento", "subscription", "Stripe", "PayPal", "carta di credito", "fatturazione", "privacy dei pagamenti".
+description: Protegge dati di pagamento e abbonamenti quando un sito/app gestisce checkout, carte, subscription o fatturazione. Copre Stripe/PayPal sicuri, verifica firma webhook, PCI-DSS, GDPR e ciclo di vita abbonamenti. Trigger - "pagamenti", "checkout", "abbonamento", "Stripe", "PayPal". EN - Protects payment and subscription data when a site/app handles checkout, cards, subscriptions or billing. Covers secure Stripe/PayPal integration, webhook signature verification, PCI-DSS, GDPR, data minimization and subscription lifecycle. Triggers - "payments", "checkout", "subscription", "Stripe", "PayPal", "credit card", "billing".
 ---
 
-# Privacy Pagamenti e Abbonamenti
+# Privacy Pagamenti e Abbonamenti · Payments Privacy
+
+> 🇮🇹 Versione italiana qui sotto · 🇬🇧 [English version below](#payments--subscriptions-privacy-english)
 
 Quando un sito/app gestisce pagamenti o abbonamenti, applicare queste regole.
 
@@ -46,3 +48,34 @@ Per PayPal usare l'API di verifica firma webhook. Rendere i gestori idempotenti 
 
 ## Checklist consegna
 Chiavi in env, webhook con firma verificata e idempotente, nessun dato carta nel DB/log, portale di gestione abbonamento, privacy policy, flusso di cancellazione, gestione pagamento fallito.
+
+---
+
+# Payments & Subscriptions Privacy (English)
+
+When a site/app handles payments or subscriptions, apply these rules.
+
+## Golden rule: never touch card data
+- The card number must NEVER pass through your server nor be stored in your DB (PCI-DSS requirement). Always use provider-hosted checkout/elements: Stripe Checkout / Payment Element, PayPal Smart Buttons.
+- In the DB store ONLY: the provider's customer ID (e.g. `cus_...`), subscription ID, status, last 4 digits and brand if supplied by the provider.
+- Secret keys (`sk_...`, client secrets) live only in server-side environment variables. Frontend gets publishable keys only.
+
+## Webhooks: always verified
+Payment/subscription state is updated ONLY from verified webhooks, never from the browser redirect (forgeable). Use the snippet above — the body must be RAW for signature verification.
+
+For PayPal use the webhook signature verification API. Make handlers idempotent (same event received twice = no double effect): store processed `event.id`s.
+
+## Subscriptions
+- Always handle: failed payment (grace period + email), cancellation (access until period end), upgrade/downgrade with provider proration.
+- Cancelling must be as easy as subscribing (mandatory in EU/US). Provide a "manage subscription" page (Stripe Customer Portal is the simplest route).
+- Prices and amounts: never trust client-sent values; the server only uses configured Price IDs.
+
+## Privacy and GDPR
+- **Minimization**: collect only the data needed for the transaction. No payment data in logs, URLs, analytics or emails.
+- **Notice**: privacy policy declaring the payment provider, processed data, retention. Cookie banner if non-essential cookies exist.
+- **Rights**: provide data export and deletion on request (provider-side deletion must be requested via the provider's API). Keep billing data for tax obligations (10 years in Italy), separated from the deleted profile.
+- **Encryption**: TLS everywhere; sensitive personal data encrypted at rest if the DB allows it.
+- **Audit log**: record who/when for every payment event and subscription change (no PAN or card data).
+
+## Delivery checklist
+Keys in env, signature-verified idempotent webhooks, no card data in DB/logs, subscription management portal, privacy policy, cancellation flow, failed-payment handling.
