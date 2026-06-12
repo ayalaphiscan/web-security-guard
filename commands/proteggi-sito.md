@@ -1,8 +1,8 @@
 ---
-description: Installa nel progetto corrente tutte le protezioni - middleware anti-attacco, security headers, file di sicurezza GitHub e hardening
+description: Installa nel progetto tutte le protezioni - middleware anti-attacco, security headers, file di sicurezza GitHub e hardening. EN - Installs all protections in the current project - anti-attack middleware, security headers, GitHub security files and hardening.
 ---
 
-Installa le protezioni di sicurezza nel progetto della cartella di lavoro corrente (se non c'è una cartella connessa, chiedila con request_cowork_directory). Prima rileva lo stack (Node/Express, Python, PHP, sito statico) guardando i file del progetto.
+Installa le protezioni di sicurezza nel progetto della cartella di lavoro corrente (se non c'è una cartella connessa, chiedila con request_cowork_directory). Prima rileva lo stack (Node/Express, Python, PHP, sito statico) guardando i file del progetto. Rispondi nella lingua dell'utente.
 
 Applica nell'ordine:
 
@@ -14,3 +14,7 @@ Applica nell'ordine:
 Non rimuovere funzionalità esistenti; se una modifica rischia di rompere qualcosa, chiedi prima conferma all'utente con AskUserQuestion.
 
 Alla fine presenta un riepilogo: cosa è stato installato, cosa deve fare l'utente sul suo hosting/GitHub (attivare secret scanning, push protection, WAF/CDN), e come si attiva/disattiva manualmente il lockdown (file flag LOCKDOWN).
+
+---
+
+*English: install the security protections in the current working folder's project (detect the stack first, reply in the user's language). Apply in order: 1) guardian anti-attack middleware (difesa-attacchi skill), 2) security headers and hardening (hardening-siti skill), 3) GitHub security files (sicurezza-github skill), 4) payments/authentication checks (privacy-pagamenti, autenticazione-sicura skills). Never remove existing functionality; ask before risky changes. End with a summary of what was installed, what the user must enable on their hosting/GitHub, and how to toggle the LOCKDOWN flag file.*
