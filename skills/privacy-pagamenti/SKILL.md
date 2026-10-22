@@ -32,11 +32,27 @@ app.post('/webhook', express.raw({type: 'application/json'}), (req, res) => {
 });
 ```
 
+Su Supabase Edge Functions (Deno) la verifica è asincrona e il corpo si legge come testo:
+
+```ts
+import Stripe from 'npm:stripe'
+const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY')!)
+Deno.serve(async (req) => {
+  const body = await req.text()  // RAW, prima di qualunque parsing
+  try {
+    const event = await stripe.webhooks.constructEventAsync(body, req.headers.get('stripe-signature')!,
+      Deno.env.get('STRIPE_WEBHOOK_SECRET')!, undefined, Stripe.createSubtleCryptoProvider())
+    // gestire event.type come sopra, in modo idempotente
+    return Response.json({ received: true })
+  } catch { return new Response('Firma non valida', { status: 400 }) }
+})
+```
+
 Per PayPal usare l'API di verifica firma webhook. Rendere i gestori idempotenti (stesso evento ricevuto due volte = nessun doppio effetto): salvare gli `event.id` processati.
 
 ## Abbonamenti
 - Gestire sempre: pagamento fallito (grace period + email), cancellazione (accesso fino a fine periodo), upgrade/downgrade con proratazione del provider.
-- La cancellazione deve essere facile quanto l'iscrizione (obbligo in UE/USA). Prevedere pagina "gestisci abbonamento" (Stripe Customer Portal è la via più semplice).
+- La disdetta deve essere facile quanto l'iscrizione: è un obbligo in diversi ordinamenti (per esempio il "pulsante di disdetta" tedesco, §312k BGB, e la legge della California sui rinnovi automatici; la regola federale della FTC statunitense è stata annullata nel 2025). Nell'UE, dal 19 giugno 2026, i contratti conclusi online devono offrire anche una funzione di recesso ben visibile (direttiva (UE) 2023/2673). Prevedere pagina "gestisci abbonamento" (Stripe Customer Portal è la via più semplice).
 - Prezzi e importi: mai fidarsi di valori inviati dal client; il server usa solo i Price ID configurati.
 
 ## Privacy e GDPR
@@ -63,11 +79,27 @@ When a site/app handles payments or subscriptions, apply these rules.
 ## Webhooks: always verified
 Payment/subscription state is updated ONLY from verified webhooks, never from the browser redirect (forgeable). Use the snippet above — the body must be RAW for signature verification.
 
+On Supabase Edge Functions (Deno) verification is asynchronous and the body is read as text:
+
+```ts
+import Stripe from 'npm:stripe'
+const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY')!)
+Deno.serve(async (req) => {
+  const body = await req.text()  // RAW, before any parsing
+  try {
+    const event = await stripe.webhooks.constructEventAsync(body, req.headers.get('stripe-signature')!,
+      Deno.env.get('STRIPE_WEBHOOK_SECRET')!, undefined, Stripe.createSubtleCryptoProvider())
+    // handle event.type as above, idempotently
+    return Response.json({ received: true })
+  } catch { return new Response('Invalid signature', { status: 400 }) }
+})
+```
+
 For PayPal use the webhook signature verification API. Make handlers idempotent (same event received twice = no double effect): store processed `event.id`s.
 
 ## Subscriptions
 - Always handle: failed payment (grace period + email), cancellation (access until period end), upgrade/downgrade with provider proration.
-- Cancelling must be as easy as subscribing (mandatory in EU/US). Provide a "manage subscription" page (Stripe Customer Portal is the simplest route).
+- Cancelling must be as easy as subscribing: it is mandatory in several jurisdictions (e.g. Germany's "cancellation button", §312k BGB, and California's automatic renewal law; the US FTC federal rule was vacated in 2025). In the EU, from 19 June 2026, contracts concluded online must also offer a clearly visible withdrawal function (Directive (EU) 2023/2673). Provide a "manage subscription" page (Stripe Customer Portal is the simplest route).
 - Prices and amounts: never trust client-sent values; the server only uses configured Price IDs.
 
 ## Privacy and GDPR

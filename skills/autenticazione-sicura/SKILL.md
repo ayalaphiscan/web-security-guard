@@ -11,8 +11,8 @@ Quando un sito/app prevede account utente, implementare l'autenticazione secondo
 
 ## Password
 - Hash con **Argon2id** (preferito) o bcrypt (cost ≥ 12). MAI MD5/SHA1/SHA256 semplice, mai password in chiaro.
-- Lunghezza minima 8-12 caratteri; verificare contro liste di password compromesse se possibile.
-- Rate limiting sul login: max ~5 tentativi per account/IP in 15 minuti, poi blocco temporaneo crescente. Risposta identica per "utente inesistente" e "password errata".
+- Lunghezza: almeno 12 caratteri (15 se la password è l'unico fattore, 8 come minimo assoluto con la 2FA), controllo contro le password compromesse. Niente regole di composizione obbligatorie: NIST SP 800-63B le sconsiglia, conta la lunghezza.
+- Rate limiting sul login per account e per IP: dopo pochi errori ritardo crescente e captcha, non un blocco dell'account (in un'app social diventerebbe un modo per chiudere fuori una persona apposta). Risposta identica per "utente inesistente" e "password errata".
 
 ## Verifica email con codice (OTP)
 - Codice numerico a 6 cifre generato con CSPRNG (`crypto.randomInt`, `secrets.randbelow`), MAI `Math.random()`.
@@ -50,8 +50,8 @@ When a site/app has user accounts, implement authentication following these rule
 
 ## Passwords
 - Hash with **Argon2id** (preferred) or bcrypt (cost ≥ 12). NEVER plain MD5/SHA1/SHA256, never plaintext passwords.
-- Minimum length 8-12 characters; check against breached-password lists when possible.
-- Rate limiting on login: max ~5 attempts per account/IP in 15 minutes, then increasing temporary lockout. Identical response for "user not found" and "wrong password".
+- Length: at least 12 characters (15 when the password is the only factor, 8 as the absolute minimum with 2FA), checked against breached passwords. No mandatory composition rules: NIST SP 800-63B advises against them, length is what counts.
+- Login rate limiting per account and per IP: after a few failures an increasing delay and a captcha, not an account lockout (in a social app it becomes a way to lock someone out on purpose). Identical response for "user not found" and "wrong password".
 
 ## Email verification codes (OTP)
 - 6-digit numeric code generated with a CSPRNG (`crypto.randomInt`, `secrets.randbelow`), NEVER `Math.random()`.

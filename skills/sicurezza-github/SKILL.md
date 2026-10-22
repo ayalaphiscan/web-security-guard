@@ -11,14 +11,14 @@ Quando un progetto ha (o avrà) una repository GitHub, installare i file di sicu
 
 ## File da installare nella repo
 
-1. `.github/workflows/security.yml` — da `references/security-workflow.yml`: a ogni push/PR e ogni notte esegue scansione segreti (Gitleaks), audit dipendenze (npm/pip) e analisi statica CodeQL.
+1. `.github/workflows/security.yml` — da `references/security-workflow.yml`: a ogni push/PR e ogni notte esegue scansione segreti (Gitleaks), audit dipendenze (npm/pip) e analisi statica CodeQL. Le action sono bloccate al commit (SHA) e i permessi sono minimi, allargati solo nel job che serve; sulle repository di un'organizzazione Gitleaks chiede il segreto gratuito `GITLEAKS_LICENSE`.
 2. `.github/dependabot.yml` — da `references/dependabot.yml`: PR automatiche di aggiornamento per dipendenze vulnerabili, per le GitHub Actions e per le immagini Docker (la versione del runtime nel `FROM`).
 
 Adattare al linguaggio del progetto: lasciare il job `npm audit` solo se c'è `package.json`, `pip-audit` solo se c'è `requirements.txt`/`pyproject.toml`, impostare i linguaggi CodeQL corretti (`javascript`, `python`, ecc.). Nel workflow la versione di Node va fissata: se il progetto ha `.node-version` o `.nvmrc`, usare `node-version-file`; altrimenti la versione del template, che è un ramo supportato con le ultime correzioni (skill aggiornamenti-runtime). Togliere l'ecosistema `docker` di Dependabot se il progetto non ha un Dockerfile.
 
 ## Regole
 - Verificare che `.gitignore` escluda `.env` e credenziali PRIMA del primo push. Se un segreto è già finito nella history, va considerato compromesso: ruotarlo subito (cambiare la chiave dal provider), non basta cancellare il file.
-- Consigliare all'utente di attivare nelle impostazioni GitHub della repo: Secret scanning + Push protection, Dependabot alerts, branch protection sul branch principale (review obbligatoria, status check del workflow security).
+- Consigliare all'utente di attivare nelle impostazioni GitHub della repo: Secret scanning + Push protection, Dependabot alerts, branch protection sul branch principale (review obbligatoria, status check del workflow security). Il resto della sicurezza dell'account GitHub (2FA, token, deploy key, accessi) è nella skill account-fornitori.
 - I workflow falliscono la build se trovano segreti o vulnerabilità high/critical: spiegare all'utente che è voluto.
 
 ## Limite da comunicare
@@ -32,14 +32,14 @@ When a project has (or will have) a GitHub repository, install the security file
 
 ## Files to install in the repo
 
-1. `.github/workflows/security.yml` — from `references/security-workflow.yml`: on every push/PR and nightly, runs secret scanning (Gitleaks), dependency audit (npm/pip) and CodeQL static analysis.
+1. `.github/workflows/security.yml` — from `references/security-workflow.yml`: on every push/PR and nightly, runs secret scanning (Gitleaks), dependency audit (npm/pip) and CodeQL static analysis. Actions are pinned to a commit (SHA) and permissions are minimal, widened only in the job that needs them; on organisation repos Gitleaks needs the free `GITLEAKS_LICENSE` secret.
 2. `.github/dependabot.yml` — from `references/dependabot.yml`: automatic update PRs for vulnerable dependencies, GitHub Actions and Docker images (the runtime version in `FROM`).
 
 Adapt to the project's language: keep the `npm audit` job only if `package.json` exists, `pip-audit` only if `requirements.txt`/`pyproject.toml` exists, set the correct CodeQL languages (`javascript`, `python`, etc.). Pin the Node version in the workflow: if the project has `.node-version` or `.nvmrc`, use `node-version-file`; otherwise the template's version, a supported branch with the latest fixes (aggiornamenti-runtime skill). Remove Dependabot's `docker` ecosystem if the project has no Dockerfile.
 
 ## Rules
 - Verify `.gitignore` excludes `.env` and credentials BEFORE the first push. If a secret is already in the history, consider it compromised: rotate it immediately (change the key at the provider) — deleting the file is not enough.
-- Advise the user to enable in the repo's GitHub settings: Secret scanning + Push protection, Dependabot alerts, branch protection on the main branch (required review, security workflow status check).
+- Advise the user to enable in the repo's GitHub settings: Secret scanning + Push protection, Dependabot alerts, branch protection on the main branch (required review, security workflow status check). The rest of GitHub account security (2FA, tokens, deploy keys, access) is in the account-fornitori skill.
 - The workflows fail the build when they find secrets or high/critical vulnerabilities: explain to the user that this is intentional.
 
 ## Limitation to communicate

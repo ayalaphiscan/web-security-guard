@@ -1,20 +1,27 @@
 {
   "name": "web-security-guard",
-  "version": "0.4.0",
-  "description": "Integrated security for websites and apps: hardening, runtime patching (PHP/Node/Docker, urgent advisories), secure Supabase (RLS, grants, keys), secure authentication (email verification, 2FA, passkeys), payment privacy, attack-defense agent with lockdown, 4-layer Fortress architecture and automated GitHub security workflows. Bilingual skills (English + Italiano). | Sicurezza integrata per siti e app: hardening, runtime aggiornati, Supabase sicuro, autenticazione sicura, privacy pagamenti, agente di difesa con lockdown, architettura Fortezza e workflow GitHub automatici.",
+  "version": "0.5.0",
+  "description": "Integrated security for websites and apps, built for social and location apps on Supabase too: hardening, SPA/front-end, OWASP API, secure Supabase (RLS, grants, Realtime, keys), location privacy and GDPR art. 9, trust & safety, incident response, domain and email, provider accounts, runtime patching, secure authentication, payment privacy, attack-defense agent and 4-layer Fortress. Bilingual skills (English + Italiano).",
   "author": {
     "name": "Fede"
   },
   "keywords": [
     "2fa",
+    "csp",
     "cve",
+    "dmarc",
+    "gdpr",
     "github-actions",
+    "incident-response",
+    "location-privacy",
+    "owasp-api",
     "patching",
     "payments",
     "privacy",
     "rls",
     "security",
     "supabase",
+    "trust-and-safety",
     "waf"
   ]
 }

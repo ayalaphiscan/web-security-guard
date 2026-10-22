@@ -19,7 +19,7 @@ Strict-Transport-Security: max-age=31536000; includeSubDomains
 X-Content-Type-Options: nosniff
 X-Frame-Options: DENY
 Referrer-Policy: strict-origin-when-cross-origin
-Permissions-Policy: camera=(), microphone=(), geolocation=()
+Permissions-Policy: camera=(), microphone=(), geolocation=()   # (self) solo per le funzioni che l'app usa davvero, es. la posizione (privacy-posizione)
 Content-Security-Policy: default-src 'self'; script-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'
 ```
 
@@ -37,7 +37,7 @@ In Node/Express usare `helmet()`. In Django attivare `SECURE_*` settings. Su hos
 - Protezione CSRF su ogni form/azione che modifica stato (token CSRF o SameSite + verifica Origin).
 
 ### 4. CORS
-- Mai `Access-Control-Allow-Origin: *` su endpoint autenticati. Whitelist esplicita di origin.
+- Mai `*` o l'origin rimandato indietro su endpoint autenticati con cookie: con `Access-Control-Allow-Credentials: true` solo origin esatti e `Vary: Origin`. Le API autenticate con un token nell'intestazione (come Supabase) possono accettare qualunque origin (api-sicura).
 
 ### 5. Upload di file
 - Whitelist di estensioni E content-type verificato sul contenuto reale (magic bytes).
@@ -84,7 +84,7 @@ In Node/Express use `helmet()`. In Django enable the `SECURE_*` settings. On sta
 - CSRF protection on every state-changing form/action (CSRF token or SameSite + Origin check).
 
 ### 4. CORS
-- Never `Access-Control-Allow-Origin: *` on authenticated endpoints. Explicit origin whitelist.
+- Never `*` or an echoed origin on endpoints authenticated by cookies: with `Access-Control-Allow-Credentials: true` only exact origins plus `Vary: Origin`. APIs authenticated by a header token (like Supabase) may accept any origin (api-sicura).
 
 ### 5. File uploads
 - Extension whitelist AND content-type verified against the real content (magic bytes).

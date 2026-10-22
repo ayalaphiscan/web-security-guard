@@ -38,8 +38,9 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          notes=$(awk '/^## What.s new in /{f=1;next} /^## /{f=0} f' README.md)
+          # Only the newest "What's new" section of the README.
+          notes=$(awk '/^## What.s new in /{if(f)exit; f=1; next} /^## /{if(f)exit} f' README.md)
           gh release create "${{ steps.v.outputs.tag }}" web-security-guard.plugin \
             --target "$GITHUB_SHA" \
-            --title "${{ steps.v.outputs.tag }} — runtime patching and secure Supabase" \
+            --title "web-security-guard ${{ steps.v.outputs.tag }}" \
             --notes "$notes"
