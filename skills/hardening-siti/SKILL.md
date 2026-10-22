@@ -51,12 +51,13 @@ In Node/Express usare `helmet()`. In Django attivare `SECURE_*` settings. Su hos
 - Mai chiavi/API key/password nel codice o nella repo: usare variabili d'ambiente e file `.env` in `.gitignore`.
 - Generare sempre `.gitignore` con `.env`, `node_modules`, credenziali.
 - Usare versioni aggiornate delle dipendenze; consigliare `npm audit` / `pip-audit` (vedi skill sicurezza-github per l'automazione).
+- Anche il **runtime** (PHP, Node.js, Python, immagine Docker) deve essere su un ramo supportato e con le ultime correzioni, fissato in un file del progetto (`.node-version`, `composer.json`, tag Docker con la patch). Una falla dell'interprete scavalca tutte le difese dell'applicazione (skill aggiornamenti-runtime).
 
 ### 8. HTTPS
 - Tutto il traffico in HTTPS, redirect da HTTP, HSTS attivo. In sviluppo locale va bene HTTP ma documentare la differenza.
 
 ## Checklist finale
-Prima di consegnare un sito/app, verificare: headers presenti, query parametrizzate, validazione server, cookie sicuri, CSRF, niente segreti nel codice, errori generici, `.gitignore` corretto. Elencare all'utente le protezioni applicate e gli eventuali punti che richiedono configurazione sul suo hosting.
+Prima di consegnare un sito/app, verificare: headers presenti, query parametrizzate, validazione server, cookie sicuri, CSRF, niente segreti nel codice, errori generici, `.gitignore` corretto, runtime supportato e aggiornato (con versione fissata), regole di accesso sul database se è un backend-as-a-service (skill supabase-sicuro). Elencare all'utente le protezioni applicate e gli eventuali punti che richiedono configurazione sul suo hosting.
 
 ---
 
@@ -97,9 +98,10 @@ In Node/Express use `helmet()`. In Django enable the `SECURE_*` settings. On sta
 - Never keys/API keys/passwords in code or repo: use environment variables and `.env` in `.gitignore`.
 - Always generate `.gitignore` with `.env`, `node_modules`, credentials.
 - Keep dependencies up to date; recommend `npm audit` / `pip-audit` (see the sicurezza-github skill for automation).
+- The **runtime** too (PHP, Node.js, Python, Docker image) must be on a supported branch with the latest fixes, pinned in a project file (`.node-version`, `composer.json`, a Docker tag with the patch). An interpreter flaw bypasses every application defense (aggiornamenti-runtime skill).
 
 ### 8. HTTPS
 - All traffic over HTTPS, redirect from HTTP, HSTS on. Local dev over HTTP is fine but document the difference.
 
 ## Final checklist
-Before delivering a site/app verify: headers present, parameterized queries, server validation, secure cookies, CSRF, no secrets in code, generic errors, correct `.gitignore`. List the applied protections and any items requiring configuration on the user's hosting.
+Before delivering a site/app verify: headers present, parameterized queries, server validation, secure cookies, CSRF, no secrets in code, generic errors, correct `.gitignore`, a supported and patched runtime (with a pinned version), database access rules for a backend-as-a-service (supabase-sicuro skill). List the applied protections and any items requiring configuration on the user's hosting.

@@ -12,9 +12,9 @@ Quando un progetto ha (o avrà) una repository GitHub, installare i file di sicu
 ## File da installare nella repo
 
 1. `.github/workflows/security.yml` — da `references/security-workflow.yml`: a ogni push/PR e ogni notte esegue scansione segreti (Gitleaks), audit dipendenze (npm/pip) e analisi statica CodeQL.
-2. `.github/dependabot.yml` — da `references/dependabot.yml`: PR automatiche di aggiornamento per dipendenze vulnerabili.
+2. `.github/dependabot.yml` — da `references/dependabot.yml`: PR automatiche di aggiornamento per dipendenze vulnerabili, per le GitHub Actions e per le immagini Docker (la versione del runtime nel `FROM`).
 
-Adattare al linguaggio del progetto: lasciare il job `npm audit` solo se c'è `package.json`, `pip-audit` solo se c'è `requirements.txt`/`pyproject.toml`, impostare i linguaggi CodeQL corretti (`javascript`, `python`, ecc.).
+Adattare al linguaggio del progetto: lasciare il job `npm audit` solo se c'è `package.json`, `pip-audit` solo se c'è `requirements.txt`/`pyproject.toml`, impostare i linguaggi CodeQL corretti (`javascript`, `python`, ecc.). Nel workflow la versione di Node va fissata: se il progetto ha `.node-version` o `.nvmrc`, usare `node-version-file`; altrimenti la versione del template, che è un ramo supportato con le ultime correzioni (skill aggiornamenti-runtime). Togliere l'ecosistema `docker` di Dependabot se il progetto non ha un Dockerfile.
 
 ## Regole
 - Verificare che `.gitignore` escluda `.env` e credenziali PRIMA del primo push. Se un segreto è già finito nella history, va considerato compromesso: ruotarlo subito (cambiare la chiave dal provider), non basta cancellare il file.
@@ -33,9 +33,9 @@ When a project has (or will have) a GitHub repository, install the security file
 ## Files to install in the repo
 
 1. `.github/workflows/security.yml` — from `references/security-workflow.yml`: on every push/PR and nightly, runs secret scanning (Gitleaks), dependency audit (npm/pip) and CodeQL static analysis.
-2. `.github/dependabot.yml` — from `references/dependabot.yml`: automatic update PRs for vulnerable dependencies.
+2. `.github/dependabot.yml` — from `references/dependabot.yml`: automatic update PRs for vulnerable dependencies, GitHub Actions and Docker images (the runtime version in `FROM`).
 
-Adapt to the project's language: keep the `npm audit` job only if `package.json` exists, `pip-audit` only if `requirements.txt`/`pyproject.toml` exists, set the correct CodeQL languages (`javascript`, `python`, etc.).
+Adapt to the project's language: keep the `npm audit` job only if `package.json` exists, `pip-audit` only if `requirements.txt`/`pyproject.toml` exists, set the correct CodeQL languages (`javascript`, `python`, etc.). Pin the Node version in the workflow: if the project has `.node-version` or `.nvmrc`, use `node-version-file`; otherwise the template's version, a supported branch with the latest fixes (aggiornamenti-runtime skill). Remove Dependabot's `docker` ecosystem if the project has no Dockerfile.
 
 ## Rules
 - Verify `.gitignore` excludes `.env` and credentials BEFORE the first push. If a secret is already in the history, consider it compromised: rotate it immediately (change the key at the provider) — deleting the file is not enough.

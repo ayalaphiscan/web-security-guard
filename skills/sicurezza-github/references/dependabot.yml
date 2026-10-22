@@ -17,3 +17,8 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+
+  - package-ecosystem: "docker"     # rimuovere se non c'è un Dockerfile; directory = dove sta il Dockerfile
+    directory: "/"
+    schedule:
+      interval: "weekly"

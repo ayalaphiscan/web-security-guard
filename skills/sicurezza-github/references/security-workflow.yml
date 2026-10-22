@@ -33,7 +33,10 @@ jobs:
       # --- Node: rimuovere se il progetto non ha package.json ---
       - uses: actions/setup-node@v4
         if: ${{ hashFiles('package.json') != '' }}
-        with: { node-version: 20 }
+        with:
+          # Un ramo supportato con le ultime correzioni (Node 20 è fuori supporto dal 30/04/2026).
+          # Se il progetto ha .node-version o .nvmrc usare invece: node-version-file: .node-version
+          node-version: '22.23.4'
       - name: npm audit
         if: ${{ hashFiles('package-lock.json') != '' }}
         run: npm audit --audit-level=high

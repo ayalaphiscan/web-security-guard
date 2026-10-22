@@ -10,6 +10,8 @@ Applica nell'ordine:
 2. **Security headers e hardening** (skill hardening-siti): aggiungi helmet/headers, correggi cookie, CORS e gestione errori dove necessario.
 3. **File GitHub** (skill sicurezza-github): crea `.github/workflows/security.yml` e `.github/dependabot.yml` adattati al linguaggio del progetto; verifica `.gitignore`.
 4. **Verifiche pagamenti e autenticazione**: se il progetto gestisce pagamenti o login, controlla i punti critici delle skill privacy-pagamenti e autenticazione-sicura e correggi ciò che è automatizzabile; segnala il resto.
+5. **Runtime** (skill aggiornamenti-runtime): fissa la versione di PHP/Node/Python a un ramo supportato con le ultime correzioni (`.node-version`, tag Docker con la patch) e scrivi l'inventario di cosa gira dove.
+6. **Supabase o altri backend-as-a-service** (skill supabase-sicuro): RLS e permessi espliciti su ogni tabella, funzioni e storage; solo la chiave pubblica nel frontend.
 
 Non rimuovere funzionalità esistenti; se una modifica rischia di rompere qualcosa, chiedi prima conferma all'utente con AskUserQuestion.
 
@@ -17,4 +19,4 @@ Alla fine presenta un riepilogo: cosa è stato installato, cosa deve fare l'uten
 
 ---
 
-*English: install the security protections in the current working folder's project (detect the stack first, reply in the user's language). Apply in order: 1) guardian anti-attack middleware (difesa-attacchi skill), 2) security headers and hardening (hardening-siti skill), 3) GitHub security files (sicurezza-github skill), 4) payments/authentication checks (privacy-pagamenti, autenticazione-sicura skills). Never remove existing functionality; ask before risky changes. End with a summary of what was installed, what the user must enable on their hosting/GitHub, and how to toggle the LOCKDOWN flag file.*
+*English: install the security protections in the current working folder's project (detect the stack first, reply in the user's language). Apply in order: 1) guardian anti-attack middleware (difesa-attacchi skill), 2) security headers and hardening (hardening-siti skill), 3) GitHub security files (sicurezza-github skill), 4) payments/authentication checks (privacy-pagamenti, autenticazione-sicura skills), 5) pin a supported, patched runtime and write the what-runs-where inventory (aggiornamenti-runtime skill), 6) Supabase/BaaS rules (supabase-sicuro skill). Never remove existing functionality; ask before risky changes. End with a summary of what was installed, what the user must enable on their hosting/GitHub, and how to toggle the LOCKDOWN flag file.*

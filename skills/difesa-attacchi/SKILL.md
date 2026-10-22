@@ -31,6 +31,7 @@ Montarlo PRIMA delle route. Copiare `references/guardian-express.js` in `securit
 
 ## Regole di implementazione
 - Il guardian è una difesa in profondità, NON sostituisce query parametrizzate, validazione e hardening (skill hardening-siti): applicare comunque quelle regole.
+- Il guardian gira dentro l'applicazione: non può fermare una falla dell'interprete (PHP, Node.js) che scatta prima del codice, come PHP2Shell nell'ottobre 2026. Contro quelle serve il runtime aggiornato (skill aggiornamenti-runtime).
 - Dietro proxy/CDN ricavare l'IP reale da `X-Forwarded-For` solo se il proxy è fidato (`app.set('trust proxy', 1)`).
 - Il lockdown NON deve mai cancellare dati: solo bloccare l'accesso in scrittura e servire la pagina di manutenzione. Lo sblocco è automatico dopo il timeout o manuale (file flag `LOCKDOWN` rimovibile / variabile env).
 - Escludere dai controlli i webhook di pagamento verificati con firma (altrimenti payload legittimi possono sembrare sospetti) — la sicurezza lì è la firma (skill privacy-pagamenti).
@@ -57,6 +58,7 @@ Use the same snippet as above; mount it BEFORE the routes. Copy `references/guar
 
 ## Implementation rules
 - Guardian is defense in depth — it does NOT replace parameterized queries, validation and hardening (hardening-siti skill): apply those rules anyway.
+- Guardian runs inside the application: it cannot stop an interpreter flaw (PHP, Node.js) that fires before the code, like PHP2Shell in October 2026. Against those you need a patched runtime (aggiornamenti-runtime skill).
 - Behind a proxy/CDN derive the real IP from `X-Forwarded-For` only if the proxy is trusted (`app.set('trust proxy', 1)`).
 - Lockdown must NEVER delete data: only block write access and serve the maintenance page. Unlock is automatic after the timeout or manual (removable `LOCKDOWN` flag file / env variable).
 - Exclude signature-verified payment webhooks from the checks (legitimate payloads can look suspicious) — security there is the signature (privacy-pagamenti skill).
