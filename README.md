@@ -50,7 +50,7 @@ Download `web-security-guard.plugin` from the [latest release](https://github.co
   - logs and the `LOCKDOWN` flag now in the mounted volume.
 - GitHub templates: Node 22.23.4 in the security workflow, Dependabot for Docker images.
 - `/security-audit` and `/proteggi-sito` also check the runtime and Supabase.
-- Releases are built by GitHub Actions on every `v*` tag.
+- Releases are built by GitHub Actions when the version in `plugin.json` changes on main (or on a `v*` tag).
 
 ## Usage examples
 
