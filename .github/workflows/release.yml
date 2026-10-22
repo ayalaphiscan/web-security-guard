@@ -1,10 +1,14 @@
 name: Release
 
-# A tag v* builds web-security-guard.plugin (zip of the plugin, like the Cowork installer expects)
-# and publishes the GitHub release with it attached.
+# Publishes web-security-guard.plugin (a stored zip of the plugin, as the Cowork installer expects)
+# as a GitHub release named after the version in .claude-plugin/plugin.json. It runs when that
+# version changes on main, on a v* tag, or by hand; a version already released is left alone.
 on:
   push:
+    branches: [main]
     tags: ["v*"]
+    paths: [".claude-plugin/plugin.json", ".github/workflows/release.yml"]
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -14,17 +18,28 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Check the version matches the tag
+      - name: Version from plugin.json
+        id: v
+        run: echo "tag=v$(jq -r .version .claude-plugin/plugin.json)" >> "$GITHUB_OUTPUT"
+      - name: A tag must match plugin.json
+        if: startsWith(github.ref, 'refs/tags/')
+        run: '[ "$GITHUB_REF_NAME" = "${{ steps.v.outputs.tag }}" ] || { echo "plugin.json says ${{ steps.v.outputs.tag }}, tag is $GITHUB_REF_NAME"; exit 1; }'
+      - name: Already released?
+        id: done
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          v=$(jq -r .version .claude-plugin/plugin.json)
-          [ "v$v" = "$GITHUB_REF_NAME" ] || { echo "plugin.json says $v, tag is $GITHUB_REF_NAME"; exit 1; }
+          if gh release view "${{ steps.v.outputs.tag }}" >/dev/null 2>&1; then echo "yes=true" >> "$GITHUB_OUTPUT"; fi
       - name: Build web-security-guard.plugin
+        if: steps.done.outputs.yes != 'true'
         run: zip -r -0 -X web-security-guard.plugin .claude-plugin skills commands README.md LICENSE
       - name: Publish the release
+        if: steps.done.outputs.yes != 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           notes=$(awk '/^## What.s new in /{f=1;next} /^## /{f=0} f' README.md)
-          gh release create "$GITHUB_REF_NAME" web-security-guard.plugin \
-            --title "$GITHUB_REF_NAME — runtime patching and secure Supabase" \
+          gh release create "${{ steps.v.outputs.tag }}" web-security-guard.plugin \
+            --target "$GITHUB_SHA" \
+            --title "${{ steps.v.outputs.tag }} — runtime patching and secure Supabase" \
             --notes "$notes"
