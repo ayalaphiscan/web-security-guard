@@ -22,7 +22,7 @@ Con l'inventario, davanti a un avviso si capisce in pochi minuti se ci riguarda.
 - Usare solo rami ancora supportati. Ottobre 2026:
   - PHP 8.2, 8.3, 8.4, 8.5 (8.1 e precedenti sono fuori supporto);
   - Node.js 22 e 24 LTS, oppure 26 (Node 20 è fuori supporto dal 30 aprile 2026);
-  - Python 3.10 o più recente.
+  - Python 3.11 o più recente (3.10 è fuori supporto da ottobre 2026).
 - Fissare la versione in un file del progetto, così build, CI e produzione usano la stessa:
   - Node: `.node-version` o `.nvmrc`; nella CI `actions/setup-node` con `node-version-file`;
   - PHP: `composer.json` (`"php": ">=8.3.36"`) e l'immagine Docker;
@@ -30,7 +30,7 @@ Con l'inventario, davanti a un avviso si capisce in pochi minuti se ci riguarda.
 - Dependabot con `package-ecosystem: "docker"` propone da solo le immagini nuove (skill sicurezza-github).
 
 ### 3. Quando esce un avviso urgente
-1. Leggere l'avviso ufficiale (php.net, nodejs.org/en/blog/vulnerability, la pagina sicurezza del fornitore) e annotare le versioni corrette. Esempio, 21 ottobre 2026:
+1. Leggere l'avviso ufficiale (php.net, nodejs.org/en/blog/vulnerability, la pagina sicurezza del fornitore) e annotare le versioni corrette: valgono quelle dell'avviso, non quelle di esempio qui sotto. Esempio, 21 ottobre 2026:
    - PHP 8.5.12, 8.4.27, 8.3.36, 8.2.35;
    - Node 26.12.1, 24.22.1, 22.23.4.
 2. Confrontarle con l'inventario: cosa è esposto, dove.
@@ -66,7 +66,7 @@ With the inventory, you can tell within minutes whether an advisory affects you.
 - Only use branches that are still supported. October 2026:
   - PHP 8.2, 8.3, 8.4, 8.5 (8.1 and older are end-of-life);
   - Node.js 22 and 24 LTS, or 26 (Node 20 has been end-of-life since 30 April 2026);
-  - Python 3.10 or newer.
+  - Python 3.11 or newer (3.10 is end-of-life from October 2026).
 - Pin the version in a project file, so build, CI and production use the same one:
   - Node: `.node-version` or `.nvmrc`; in CI, `actions/setup-node` with `node-version-file`;
   - PHP: `composer.json` (`"php": ">=8.3.36"`) and the Docker image;
@@ -74,7 +74,7 @@ With the inventory, you can tell within minutes whether an advisory affects you.
 - Dependabot with `package-ecosystem: "docker"` proposes new images on its own (sicurezza-github skill).
 
 ### 3. When an urgent advisory lands
-1. Read the official advisory (php.net, nodejs.org/en/blog/vulnerability, the provider's security page) and note the fixed versions. Example, 21 October 2026:
+1. Read the official advisory (php.net, nodejs.org/en/blog/vulnerability, the provider's security page) and note the fixed versions: the advisory's numbers count, not the examples below. Example, 21 October 2026:
    - PHP 8.5.12, 8.4.27, 8.3.36, 8.2.35;
    - Node 26.12.1, 24.22.1, 22.23.4.
 2. Compare them with the inventory: what is exposed, and where.
