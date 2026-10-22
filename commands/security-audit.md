@@ -13,7 +13,9 @@ Analizza il codice cercando, in ordine di gravità:
 5. **Pagamenti**: dati carta salvati o loggati, webhook senza verifica firma, prezzi presi dal client (confronta con la skill privacy-pagamenti).
 6. **Configurazione**: security headers mancanti, CORS aperto, errori che espongono stack trace, HTTP senza redirect a HTTPS (confronta con la skill hardening-siti).
 7. **Dipendenze**: esegui `npm audit` o `pip-audit` se disponibili nel sandbox.
-8. **Repo GitHub**: presenza di workflow di sicurezza e dependabot (skill sicurezza-github).
+8. **Runtime**: versione di PHP/Node/Python in Dockerfile (`FROM`), `.node-version`/`.nvmrc`, `composer.json`, workflow CI e configurazione dell'hosting. Confrontala con gli ultimi rilasci di sicurezza (skill aggiornamenti-runtime). Un ramo fuori supporto (Node 20, PHP 8.1 o precedenti) o una versione senza le ultime correzioni è **Alta**; se è esposto a internet ed esiste un avviso critico, **Critica**.
+9. **Backend-as-a-service** (Supabase, Firebase): RLS su ogni tabella, permessi espliciti, funzioni `SECURITY DEFINER`, policy dello storage, chiavi nel frontend (skill supabase-sicuro).
+10. **Repo GitHub**: presenza di workflow di sicurezza e dependabot (skill sicurezza-github).
 
 Produci un report con: riepilogo (numero problemi per gravità Critica/Alta/Media/Bassa), per ogni problema il file e la riga, perché è pericoloso (in linguaggio semplice), e la correzione concreta. Salva il report come `security-audit.md` negli outputs e presentalo con present_files.
 
@@ -21,4 +23,4 @@ Alla fine chiedi all'utente se vuole che applichi subito le correzioni (in tal c
 
 ---
 
-*English: run a security audit of the current working folder's project (reply in the user's language). Scan in order of severity: hardcoded secrets, injection (SQL/shell/eval/paths), XSS, authentication weaknesses, payment-data handling, configuration (headers, CORS, stack traces, HTTPS), vulnerable dependencies (`npm audit`/`pip-audit`), GitHub security workflows. Produce a report (counts by Critical/High/Medium/Low, file and line per finding, plain-language risk and concrete fix), save it as `security-audit.md` in outputs and present it. Finally ask the user whether to apply the fixes right away using this plugin's skills.*
+*English: run a security audit of the current working folder's project (reply in the user's language). Scan in order of severity: hardcoded secrets, injection (SQL/shell/eval/paths), XSS, authentication weaknesses, payment-data handling, configuration (headers, CORS, stack traces, HTTPS), vulnerable dependencies (`npm audit`/`pip-audit`), runtime versions (PHP/Node/Python in Dockerfile, `.node-version`, CI, hosting) against the latest security releases, backend-as-a-service rules (Supabase RLS, grants, storage, keys), GitHub security workflows. Produce a report (counts by Critical/High/Medium/Low, file and line per finding, plain-language risk and concrete fix), save it as `security-audit.md` in outputs and present it. Finally ask the user whether to apply the fixes right away using this plugin's skills.*

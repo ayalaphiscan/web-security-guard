@@ -1,11 +1,14 @@
 {
   "name": "web-security-guard",
-  "owner": { "name": "Fede" },
+  "owner": {
+    "name": "Fede"
+  },
   "plugins": [
     {
       "name": "web-security-guard",
       "source": "./",
-      "description": "Integrated security for websites and apps: hardening, secure authentication (email verification, 2FA, passkeys), payment privacy, attack-defense agent with lockdown, 4-layer Fortress architecture (invisible shield, hidden origin, offline vault) and automated GitHub security workflows."
+      "description": "Integrated security for websites and apps: hardening, runtime patching (PHP/Node/Docker), secure Supabase (RLS, grants, keys), secure authentication (email verification, 2FA, passkeys), payment privacy, attack-defense agent with lockdown, 4-layer Fortress architecture (invisible shield, hidden origin, offline vault) and automated GitHub security workflows.",
+      "version": "0.4.0"
     }
   ]
 }

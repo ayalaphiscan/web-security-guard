@@ -1,0 +1,30 @@
+name: Release
+
+# A tag v* builds web-security-guard.plugin (zip of the plugin, like the Cowork installer expects)
+# and publishes the GitHub release with it attached.
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check the version matches the tag
+        run: |
+          v=$(jq -r .version .claude-plugin/plugin.json)
+          [ "v$v" = "$GITHUB_REF_NAME" ] || { echo "plugin.json says $v, tag is $GITHUB_REF_NAME"; exit 1; }
+      - name: Build web-security-guard.plugin
+        run: zip -r -0 -X web-security-guard.plugin .claude-plugin skills commands README.md LICENSE
+      - name: Publish the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          notes=$(awk '/^## What.s new in /{f=1;next} /^## /{f=0} f' README.md)
+          gh release create "$GITHUB_REF_NAME" web-security-guard.plugin \
+            --title "$GITHUB_REF_NAME — runtime patching and secure Supabase" \
+            --notes "$notes"
